@@ -3,7 +3,7 @@ Task4Hire is a website where you can find people to help you with tasks like cle
 
 # Wire Frame 
 
-![Task4Hire] (img/Task4HireApp.JPG)
+![Task4Hire] (./images/Task4HireApp.JPG)
 
 # ERD 
 

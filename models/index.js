@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-console.log('--PRINT--', process.env.MONGO_URI);
 // import models
 const User = require('./user');
 mongoose.connect(process.env.MONGO_URI);

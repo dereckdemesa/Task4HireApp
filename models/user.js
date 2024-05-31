@@ -1,32 +1,23 @@
+// models/User.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
+const UserSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    phone: {
-        type: String,
-        validate: { 
-            validator: function(v) {
-                return /\d{3}-\d{3}-\d{4}/.test(v);
-            },
-            message: props => `${props.value} is not a valid phone number!`
-        },
-        required: [true, 'Your phone number is required']
-    }
-}, { timestamps: true });
+    passwordHash: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    location: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+});
 
-userSchema.pre('save', function(next) {
-    console.log('------ PASSWORD ------', this.password); // might delete later..
-    let hash = bcrypt.hashSync(this.password, 12);
-    console.log('---- HASH ----', hash); // might delete later..
-    this.password = hash;
+UserSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        this.passwordHash = await bcrypt.hash(this.password, 10);
+    }
     next();
 });
 
-// create the model and export it
-const User = mongoose.model('User', userSchema);
-
-// make this model available for the index file
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);
