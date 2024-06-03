@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema({
     passwordHash: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    location: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
@@ -19,8 +18,8 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-// Check if the model is already compiled before defining it
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
+
 

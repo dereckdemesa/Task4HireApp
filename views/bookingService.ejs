@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Service</title>
+</head>
+<body>
+    <h1>Select a Service</h1>
+    <form action="/booking/service" method="POST">
+        <div>
+            <label for="service">Service:</label>
+            <select id="service" name="service" required>
+                <option value="TV Mounting">TV Mounting</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Painting">Painting</option>
+                <option value="Assembly">Assembly</option>
+            </select>
+        </div>
+        <button type="submit">Next</button>
+    </form>
+    <a href="/">Home</a>
+</body>
+</html>

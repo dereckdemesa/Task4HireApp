@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Task</title>
+</head>
+<body>
+    <h1>Book a Task</h1>
+    <form action="/booking" method="POST">
+        <div>
+            <label for="service">Service:</label>
+            <select id="service" name="service" required>
+                <option value="TV Mounting" <%= service === 'TV Mounting' ? 'selected' : '' %>>TV Mounting</option>
+                <option value="Cleaning" <%= service === 'Cleaning' ? 'selected' : '' %>>Cleaning</option>
+                <option value="Painting" <%= service === 'Painting' ? 'selected' : '' %>>Painting</option>
+                <option value="Assembly" <%= service === 'Assembly' ? 'selected' : '' %>>Assembly</option>
+            </select>
+        </div>
+        <div>
+            <label for="address">Home Address:</label>
+            <input type="text" id="address" name="address" required>
+        </div>
+        <div>
+            <label for="details">Task Details:</label>
+            <textarea id="details" name="details" required></textarea>
+        </div>
+        <div>
+            <button type="submit">Book!</button>
+        </div>
+    </form>
+    <a href="/services">Back to Services</a>
+</body>
+</html>

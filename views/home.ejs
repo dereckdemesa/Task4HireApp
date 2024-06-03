@@ -6,6 +6,12 @@
     <title>Home</title>
 </head>
 <body>
+    <% if (alerts.success) { %>
+        <div class="alert alert-success"><%= alerts.success %></div>
+    <% } %>
+    <% if (alerts.error) { %>
+        <div class="alert alert-danger"><%= alerts.error %></div>
+    <% } %>
     <h1>Welcome to <%= siteTitle %></h1>
     <% if (user) { %>
         <p>Hello, <%= user.username %>!</p>
@@ -15,7 +21,6 @@
         <a href="/auth/signup">Sign Up</a>
         <a href="/auth/login">Log In</a>
     <% } %>
+    <a href="/services">Services</a>
 </body>
-</html>
-
 </html>
