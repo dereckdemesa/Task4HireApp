@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -20,4 +19,8 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-module.exports = mongoose.model('User', UserSchema);
+// Check if the model is already compiled before defining it
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
+module.exports = User;
+

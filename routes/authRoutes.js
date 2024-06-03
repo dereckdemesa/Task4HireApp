@@ -1,24 +1,33 @@
-// routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Register
-router.post('/register', async (req, res) => {
+// Render sign up page
+router.get('/signup', (req, res) => {
+    res.render('signup');
+});
+
+// Handle sign up form submission
+router.post('/signup', async (req, res) => {
     try {
-        const { username, email, password, firstName, lastName, location } = req.body;
+        const { username, email, password } = req.body;
         const passwordHash = await bcrypt.hash(password, 10);
-        const user = new User({ username, email, passwordHash, firstName, lastName, location });
+        const user = new User({ username, email, passwordHash });
         await user.save();
-        res.status(201).json(user);
+        res.redirect('/auth/login');
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// Login
+// Render log in page
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// Handle log in form submission
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
