@@ -10,10 +10,6 @@ const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 3000;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-// Import models
-const User = require('./models/User');
-const Task = require('./models/Task');
-
 // Initialize app
 const app = express();
 
@@ -33,7 +29,7 @@ app.use(session({
     secret: SECRET_SESSION,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // For development, set secure: true in production with HTTPS
+    cookie: { secure: false } 
 }));
 app.use(flash());
 
@@ -48,10 +44,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Define routes
 app.get('/', (req, res) => {

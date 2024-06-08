@@ -21,7 +21,7 @@ const STRATEGY = new LocalStrategy({
 });
 
 passport.serializeUser((user, callback) => {
-    callback(null, user.email); // note: might switch to user.id
+    callback(null, user.email); 
 }); 
 
 passport.deserializeUser(async (email, callback) => {
