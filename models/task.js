@@ -1,19 +1,22 @@
-// models/Task.js
 const mongoose = require('mongoose');
 
-const TaskSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    status: { type: String, default: 'open' },
-    price: { type: Number, required: true },
-    category: { type: String, required: true },
-    location: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
+const taskSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    workerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    taskName: { type: String, required: true },
+    description: { type: String, required: true },
+    location: { type: String, required: true },
+    category: { type: String, required: true },
+    date: { type: Date, required: true },
+    status: { type: String, required: true, default: 'Pending' }, // Default value
+    address: { type: String, required: true },
+    price: { type: Number, required: true }
 });
 
-module.exports = mongoose.model('Task', TaskSchema);
+const Task = mongoose.model('Task', taskSchema);
+
+module.exports = Task;
+
+
+
 //const Task = mongoose.model('Task, TaskSchema');
 //module.exports = Task

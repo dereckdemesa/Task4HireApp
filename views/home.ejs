@@ -4,23 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <% if (alerts.success) { %>
-        <div class="alert alert-success"><%= alerts.success %></div>
-    <% } %>
-    <% if (alerts.error) { %>
-        <div class="alert alert-danger"><%= alerts.error %></div>
-    <% } %>
-    <h1>Welcome to <%= siteTitle %></h1>
-    <% if (user) { %>
-        <p>Hello, <%= user.username %>!</p>
-        <a href="/profile">Profile</a>
-        <a href="/auth/logout">Log Out</a>
-    <% } else { %>
-        <a href="/auth/signup">Sign Up</a>
-        <a href="/auth/login">Log In</a>
-    <% } %>
-    <a href="/services">Services</a>
+    <header class="header">
+        <div class="logo">Task4Hire</div>
+        <nav class="navbar">
+            <% if (user) { %>
+                <a href="/profile">Profile</a>
+                <a href="/auth/logout">Log Out</a>
+                <a href="/services">Services</a>
+            <% } else { %>
+                <a href="/auth/login">Log In</a>
+                <a href="/auth/signup">Sign Up</a>
+            <% } %>
+        </nav>
+        <div id="menu-icon">☰</div>
+    </header>
+
+    <main class="home">
+        <div class="home-content">
+            <h1>Book Your Next Task</h1>
+            <p>Hello, <%= user ? user.username : 'Guest' %>!</p>
+            <form action="/services" method="GET">
+                <input type="text" name="task" placeholder="Describe one task, e.g., fix the hole in my wall">
+                <button type="submit" class="btn">Search</button>
+            </form>
+            <div class="button-container">
+                <a href="/services?category=Indoor Painting" class="btn">Indoor Painting</a>
+                <a href="/services?category=Furniture Assembly" class="btn">Furniture Assembly</a>
+                <a href="/services?category=General Mounting" class="btn">General Mounting</a>
+                <a href="/services?category=Help Moving" class="btn">Help Moving</a>
+                <a href="/services?category=Cleaning" class="btn">Cleaning</a>
+                <a href="/services?category=Door, Cabinet, & Furniture Repair" class="btn">Door, Cabinet, & Furniture Repair</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
 </body>
 </html>
+

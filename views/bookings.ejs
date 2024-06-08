@@ -3,32 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book a Task</title>
+    <title>Bookings</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Book a Task</h1>
-    <form action="/booking" method="POST">
-        <div>
-            <label for="service">Service:</label>
-            <select id="service" name="service" required>
-                <option value="TV Mounting" <%= service === 'TV Mounting' ? 'selected' : '' %>>TV Mounting</option>
-                <option value="Cleaning" <%= service === 'Cleaning' ? 'selected' : '' %>>Cleaning</option>
-                <option value="Painting" <%= service === 'Painting' ? 'selected' : '' %>>Painting</option>
-                <option value="Assembly" <%= service === 'Assembly' ? 'selected' : '' %>>Assembly</option>
-            </select>
+    <header>
+        <h1>Task4Hire</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/profile">Profile</a>
+            <a href="/services">Services</a>
+            <a href="/auth/logout">Log Out</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Your Booked Appointments:</h2>
+        <div class="bookings">
+            <% if (bookings.length > 0) { %>
+                <% bookings.forEach(function(booking) { %>
+                    <div class="booking-card">
+                        <h4>Task: <%= booking.taskName %></h4>
+                        <% if (booking.date) { %>
+                            <p>Date: <%= new Date(booking.date).toDateString() %></p>
+                        <% } else { %>
+                            <p>Date: Not specified</p>
+                        <% } %>
+                        <p>Status: <%= booking.status %></p>
+                        <p>Address: <%= booking.address %></p>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No appointments booked yet.</p>
+            <% } %>
         </div>
-        <div>
-            <label for="address">Home Address:</label>
-            <input type="text" id="address" name="address" required>
-        </div>
-        <div>
-            <label for="details">Task Details:</label>
-            <textarea id="details" name="details" required></textarea>
-        </div>
-        <div>
-            <button type="submit">Book!</button>
-        </div>
-    </form>
-    <a href="/services">Back to Services</a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
 </body>
 </html>
+
+

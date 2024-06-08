@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Book an Appointment</h1>
+    </header>
+    <nav>
+        <a href="/profile" class="btn">Profile</a>
+        <a href="/auth/logout" class="btn">Log Out</a>
+        <a href="/services" class="btn">Services</a>
+    </nav>
+    <div class="container">
+        <form action="/booking/appointment" method="POST">
+            <label for="service">Service:</label>
+            <input type="text" id="service" name="service" value="<%= service %>" readonly>
+            
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required>
+            
+            <h3>Home Address</h3>
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" required>
+            
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+            
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" required>
+            
+            <label for="zip">Zip Code:</label>
+            <input type="text" id="zip" name="zip" required>
+            
+            <button type="submit" class="btn">Book</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
+</body>
+</html>

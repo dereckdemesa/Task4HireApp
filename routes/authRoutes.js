@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const isLoggedIn = require('../middleware/isLoggedIn');
 
-// Render sign up page
+// renders sign up page
 router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
-// Handle sign up form submission
+// sandles sign up form submission
 router.post('/signup', async (req, res) => {
     try {
         const { username, email, password, firstName, lastName } = req.body;
@@ -17,38 +18,51 @@ router.post('/signup', async (req, res) => {
         const user = new User({ username, email, passwordHash, firstName, lastName });
         await user.save();
         req.flash('success', 'You have successfully signed up!');
-        res.redirect('/');
+        res.redirect('/auth/login');
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// Render log in page
+// render log in page
 router.get('/login', (req, res) => {
     res.render('login');
 });
 
-// Handle log in form submission
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ error: 'Invalid credentials' });
+// handle log in form submission
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/auth/login',
+    failureFlash: true
+}));
 
-        const isMatch = await bcrypt.compare(password, user.passwordHash);
-        if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
-
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        // Set the token as a cookie
-        res.cookie('token', token, { httpOnly: true });
-
-        // Redirect to home page
+// handles the log out
+router.get('/logout', (req, res) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        req.flash('success', 'You have logged out.');
         res.redirect('/');
+    });
+});
+
+// delete user profile
+router.delete('/profile/delete', isLoggedIn, async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        // find and delete the user from the database
+        await User.findByIdAndDelete(userId);
+
+        req.logout(function(err) {
+            if (err) { return next(err); }
+            req.flash('success', 'Your account has been deleted.');
+            res.redirect('/');
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
 module.exports = router;
+
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Task4Hire</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/auth/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="form-container">
+            <h2>Booking Confirmation</h2>
+            <div class="confirmation-details">
+                <p><strong>Task:</strong> <%= task.taskName %></p>
+                <p><strong>Description:</strong> <%= task.description %></p>
+                <p><strong>Location:</strong> <%= task.address %></p>
+                <p><strong>Date:</strong> <%= new Date(task.date).toDateString() %></p>
+                <p><strong>Status:</strong> <%= task.status %></p>
+            </div>
+            <form action="/booking/pay" method="POST">
+                <input type="hidden" name="taskId" value="<%= task._id %>">
+                <button type="submit" class="btn">Proceed to Payment</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
+</body>
+</html>
+

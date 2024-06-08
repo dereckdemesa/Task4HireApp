@@ -4,40 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Services</h1>
-    <ul>
-        <li>
-            TV Mounting
-            <form action="/booking/service" method="POST" style="display:inline;">
-                <input type="hidden" name="service" value="TV Mounting">
-                <button type="submit">Book</button>
-            </form>
-        </li>
-        <li>
-            Cleaning
-            <form action="/booking/service" method="POST" style="display:inline;">
-                <input type="hidden" name="service" value="Cleaning">
-                <button type="submit">Book</button>
-            </form>
-        </li>
-        <li>
-            Painting
-            <form action="/booking/service" method="POST" style="display:inline;">
-                <input type="hidden" name="service" value="Painting">
-                <button type="submit">Book</button>
-            </form>
-        </li>
-        <li>
-            Assembly
-            <form action="/booking/service" method="POST" style="display:inline;">
-                <input type="hidden" name="service" value="Assembly">
-                <button type="submit">Book</button>
-            </form>
-        </li>
-    </ul>
-    <a href="/">Home</a>
+    <header>
+        <h1>Task4Hire</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/auth/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="form-container">
+            <h2>Our Services</h2>
+            <% services.forEach(service => { %>
+                <div class="service">
+                    <h3><%= service.name %></h3>
+                    <p><%= service.description %></p>
+                    <form action="/booking/address" method="POST">
+                        <input type="hidden" name="service" value="<%= service.name %>">
+                        <button type="submit" class="btn">Book Now</button>
+                    </form>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
 </body>
 </html>
-

@@ -4,35 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <form action="/auth/signup" method="POST">
-        <div>
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" required>
+    <header>
+        <h1>Task4Hire</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/auth/login">Log In</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="form-card sign-up-form">
+            <h2>Sign Up</h2>
+            <form action="/auth/signup" method="POST">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Sign Up</button>
+            </form>
         </div>
-        <div>
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required>
-        </div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit">Sign Up</button>
-        </div>
-    </form>
-    <a href="/">Home</a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
 </body>
 </html>
+
 

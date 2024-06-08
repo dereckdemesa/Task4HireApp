@@ -1,4 +1,3 @@
-// routes/reviewRoutes.js
 const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
@@ -7,7 +6,7 @@ const { isAuthenticated } = require('../middleware/auth');
 // GET /reviews
 router.get('/', async (req, res) => {
     try {
-        const reviews = await Review.find();
+        const reviews = await Review.find().populate('userId', 'username').populate('taskId', 'title');
         res.json(reviews);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -17,7 +16,7 @@ router.get('/', async (req, res) => {
 // POST /reviews
 router.post('/', isAuthenticated, async (req, res) => {
     try {
-        const review = new Review({ ...req.body, reviewerId: req.user._id });
+        const review = new Review({ ...req.body, userId: req.user._id });
         await review.save();
         res.status(201).json(review);
     } catch (err) {
@@ -31,7 +30,7 @@ router.put('/:id', isAuthenticated, async (req, res) => {
         const review = await Review.findById(req.params.id);
         if (!review) return res.status(404).json({ error: 'Review not found' });
 
-        if (review.reviewerId.toString() !== req.user._id.toString()) {
+        if (review.userId.toString() !== req.user._id.toString()) {
             return res.status(403).json({ error: 'Unauthorized' });
         }
 
@@ -49,7 +48,7 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
         const review = await Review.findById(req.params.id);
         if (!review) return res.status(404).json({ error: 'Review not found' });
 
-        if (review.reviewerId.toString() !== req.user._id.toString()) {
+        if (review.userId.toString() !== req.user._id.toString()) {
             return res.status(403).json({ error: 'Unauthorized' });
         }
 

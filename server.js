@@ -6,16 +6,19 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/passport-config');
 const isLoggedIn = require('./middleware/isLoggedIn');
-const { isAuthenticated } = require('./middleware/auth');
-const cookieParser = require('cookie-parser'); // Import cookie-parser
+const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 3000;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
 // Import models
 const User = require('./models/User');
+const Task = require('./models/Task');
 
 // Initialize app
 const app = express();
+
+// serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -25,26 +28,27 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(session({
     secret: SECRET_SESSION,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: false } // For development, set secure: true in production with HTTPS
 }));
 app.use(flash());
-app.use(cookieParser()); // Use cookie-parser middleware
 
-// Initialize passport
+// initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware for tracking users and alerts
+// middleware for tracking users and alerts
 app.use((req, res, next) => {
     res.locals.alerts = req.flash();
     res.locals.currentUser = req.user;
     next();
 });
 
-// Connect to MongoDB
+// connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB', err));
@@ -54,8 +58,39 @@ app.get('/', (req, res) => {
     res.render('home', { siteTitle: 'Task4Hire', user: req.user });
 });
 
-app.get('/profile', isLoggedIn, (req, res) => {
-    res.render('profile', { name: req.user.name, email: req.user.email, phone: req.user.phone });
+app.get('/profile', isLoggedIn, async (req, res) => {
+    try {
+        console.log('req.user:', req.user); 
+        if (!req.user) {
+            console.error('User is not defined');
+            return res.redirect('/auth/login');
+        }
+        const user = await User.findById(req.user._id);
+        const bookings = await Task.find({ userId: req.user._id });
+
+       
+        const latestBooking = bookings.length > 0 ? bookings[bookings.length - 1] : {};
+        const address = latestBooking.address || '';
+
+        res.render('profile', { user, bookings, address });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+app.get('/services', (req, res) => {
+    const services = [
+        { name: 'Indoor Painting', description: 'Professional indoor painting services.' },
+        { name: 'Furniture Assembly', description: 'Expert furniture assembly.' },
+        { name: 'General Mounting', description: 'Mounting services for TVs, frames, etc.' },
+        { name: 'Help Moving', description: 'Assistance with moving and relocation.' },
+        { name: 'Cleaning', description: 'Professional cleaning services.' },
+        { name: 'Door, Cabinet, & Furniture Repair', description: 'Repair services for doors, cabinets, and furniture.' }
+         // add more services as needed...
+];
+       
+    
+    res.render('services', { services, user: req.user });
 });
 
 // Import auth routes
@@ -64,12 +99,16 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const methodOverride = require('method-override');
 
 app.use('/auth', authRoutes);
 app.use('/services', serviceRoutes);
 app.use('/booking', bookingRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use(methodOverride('_method'));
 
 // Error handling for 404
 app.use((req, res) => {
@@ -82,3 +121,4 @@ const server = app.listen(PORT, () => {
 });
 
 module.exports = server;
+

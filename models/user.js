@@ -7,19 +7,13 @@ const UserSchema = new mongoose.Schema({
     passwordHash: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    address: { type: String, required: false }
 });
 
-UserSchema.pre('save', async function (next) {
-    if (this.isModified('password')) {
-        this.passwordHash = await bcrypt.hash(this.password, 10);
-    }
-    next();
-});
+UserSchema.methods.comparePassword = function(password) {
+    return bcrypt.compare(password, this.passwordHash);
+};
 
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
-
-

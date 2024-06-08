@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Success</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Task4Hire</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/services">Services</a></li>
+                <% if (user) { %>
+                    <li><a href="/auth/logout">Log Out</a></li>
+                <% } else { %>
+                    <li><a href="/auth/login">Log In</a></li>
+                    <li><a href="/auth/signup">Sign Up</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Booking Success</h2>
+        <p>Your booking for <strong><%= task.taskName %></strong> has been successfully completed.</p>
+        <p>Description: <%= task.description %></p>
+        <p>Location: <%= task.location %></p>
+        <p>Date: <%= new Date(task.date).toDateString() %></p>
+        <p>Status: <%= task.status %></p>
+        <p>Price: $<%= task.price %></p>
+    </div>
+    <footer>
+        <p>&copy; 2024 Task4Hire</p>
+    </footer>
+</body>
+</html>
+
