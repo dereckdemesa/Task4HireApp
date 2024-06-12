@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 3000;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
+
 // Initialize app
 const app = express();
 
@@ -43,6 +44,25 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
 });
+
+// Connect to MongoDB
+const connectDB = async () => {
+    try {
+        const options = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 10000, // Increase timeout to 10 seconds
+            socketTimeoutMS: 45000, // Set socket timeout to 45 seconds
+        };
+        await mongoose.connect(process.env.MONGO_URI, options);
+        console.log('Connected to MongoDB');
+    } catch (err) {
+        console.error('Could not connect to MongoDB', err);
+        setTimeout(connectDB, 5000); // Retry after 5 seconds
+    }
+};
+
+connectDB();
 
 
 // Define routes
