@@ -46,23 +46,13 @@ app.use((req, res, next) => {
 });
 
 // Connect to MongoDB
-const connectDB = async () => {
-    try {
-        const options = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            
-        };
-        await mongoose.connect(process.env.MONGO_URI, options);
-        console.log('Connected to MongoDB');
-    } catch (err) {
-        console.error('Could not connect to MongoDB', err);
-        setTimeout(connectDB, 5000); // Retry after 5 seconds
-    }
-};
+mongoose.connect(process.env.MONGO_URI, {
 
-connectDB();
-
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch(err => {
+    console.error('Could not connect to MongoDB', err);
+});
 
 // Define routes
 app.get('/', (req, res) => {
