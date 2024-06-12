@@ -1,4 +1,4 @@
-const { User } = require('./models/User');
+const { User } = require('./User');
 const Task = require('./Task');
 const Review = require('./Review');
 const Category = require('./Category');
